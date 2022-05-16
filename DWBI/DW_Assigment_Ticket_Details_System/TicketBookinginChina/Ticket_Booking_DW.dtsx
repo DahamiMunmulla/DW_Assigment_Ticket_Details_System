@@ -1,0 +1,523 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/16/2022 1:23:43 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-43PMS14"
+  DTS:CreatorName="DESKTOP-43PMS14\HP"
+  DTS:DTSID="{6C3A7F4C-F03E-4077-91CC-48E5A5FE2882}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Ticket_Booking_DW"
+  DTS:PackageType="5"
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{A6A39C19-7687-4844-A14B-182568D7C54F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F382D12C-A4A0-4FC9-9F3F-BC47E5513F26}"
+      DTS:ObjectName="DESKTOP-43PMS14.Ticket_Booking_DW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-43PMS14;Initial Catalog=Ticket_Booking_DW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_SourceDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8B916EF0-ED06-4A53-8D78-AF5FE9093DFA}"
+      DTS:ObjectName="DESKTOP-43PMS14.Ticket_Booking_SourceDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-43PMS14;Initial Catalog=Ticket_Booking_SourceDB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_Staging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{DD6EA7E0-D5C5-42B3-9258-298738B8B982}"
+      DTS:ObjectName="DESKTOP-43PMS14.Ticket_Booking_Staging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-43PMS14;Initial Catalog=Ticket_Booking_Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Transform AirRoutes from Staging"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{2B049508-4F95-4593-B0E0-DACB7342E226}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Transform AirRoutes from Staging"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="Load Dim  AirRoutes Details"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">exec.dbo.UpdateDimAirRoutes ?,?,?,?,?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_DW]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_DW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].Columns[RID]"
+                      cachedDataType="r8"
+                      cachedName="RID"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@AlternateRID]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[RID]" />
+                    <inputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].Columns[ID]"
+                      cachedDataType="r8"
+                      cachedName="ID"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@ID]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[ID]" />
+                    <inputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].Columns[depAirport]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="depAirport"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@deptAirport]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[depAirport]" />
+                    <inputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].Columns[traAirport]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="traAirport"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@traAirport]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[traAirport]" />
+                    <inputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].Columns[arrAirport]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="arrAirport"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@arrAirport]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[arrAirport]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@AlternateRID]"
+                      dataType="i4"
+                      name="@AlternateRID">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@ID]"
+                      dataType="i4"
+                      name="@ID">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@deptAirport]"
+                      dataType="wstr"
+                      length="10"
+                      name="@deptAirport">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@traAirport]"
+                      dataType="wstr"
+                      length="10"
+                      name="@traAirport">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input].ExternalColumns[@arrAirport]"
+                      dataType="wstr"
+                      length="10"
+                      name="@arrAirport">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Transform Air Routes from Staging"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[StgAirRoute]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_Staging]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-43PMS14.Ticket_Booking_Staging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[RID]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[RID]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[RID]"
+                      name="RID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[ID]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[ID]"
+                      name="ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[depAirport]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[depAirport]"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[depAirport]"
+                      name="depAirport"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[traAirport]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[traAirport]"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[traAirport]"
+                      name="traAirport"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[arrAirport]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[arrAirport]"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].Columns[arrAirport]"
+                      name="arrAirport"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[RID]"
+                      dataType="r8"
+                      name="RID" />
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                      dataType="r8"
+                      name="ID" />
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[depAirport]"
+                      dataType="wstr"
+                      length="255"
+                      name="depAirport" />
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[traAirport]"
+                      dataType="wstr"
+                      length="255"
+                      name="traAirport" />
+                    <externalMetadataColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output].ExternalColumns[arrAirport]"
+                      dataType="wstr"
+                      length="255"
+                      name="arrAirport" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[RID]"
+                      dataType="r8"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[RID]"
+                      name="RID" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ID]"
+                      dataType="r8"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ID]"
+                      name="ID" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[depAirport]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[depAirport]"
+                      name="depAirport" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[traAirport]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[traAirport]"
+                      name="traAirport" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[arrAirport]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[arrAirport]"
+                      name="arrAirport" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Transform AirRoutes from Staging.Paths[OLE DB Source Output]"
+              endId="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details.Inputs[OLE DB Command Input]"
+              name="OLE DB Source Output"
+              startId="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="239.2,41.6"
+          Id="Package\Transform AirRoutes from Staging"
+          TopLeft="39.2857149547461,39.0000005469603" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Transform AirRoutes from Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="242.4,41.6"
+          Id="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging"
+          TopLeft="93,26" />
+        <NodeLayout
+          Size="209.6,41.6"
+          Id="Package\Transform AirRoutes from Staging\Load Dim  AirRoutes Details"
+          TopLeft="157,177" />
+        <EdgeLayout
+          Id="Package\Transform AirRoutes from Staging.Paths[OLE DB Source Output]"
+          TopLeft="214.2,67.6">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="47.5999999999999,109.4"
+              Start="0,0"
+              End="47.5999999999999,101.9">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.7" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,50.7"
+                    Point2="0,54.7"
+                    Point3="4,54.7" />
+                  <mssgle:LineSegment
+                    End="43.5999999999999,54.7" />
+                  <mssgle:CubicBezierSegment
+                    Point1="43.5999999999999,54.7"
+                    Point2="47.5999999999999,54.7"
+                    Point3="47.5999999999999,58.7" />
+                  <mssgle:LineSegment
+                    End="47.5999999999999,101.9" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Transform AirRoutes from Staging\Transform Air Routes from Staging">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
